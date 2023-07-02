@@ -94,4 +94,4 @@ jobs:
           docker pull dataenginer/viewvrn:latest
 
           #Запускаем новый контейнер с изображением
-          docker run --restart=always --name=viewvrn -d dataenginer/viewvrn:latest 
+          docker run --restart=always --name=viewvrn -d dataenginer/viewvrn:latest  -p 8082:8082 

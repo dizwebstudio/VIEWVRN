@@ -34,7 +34,7 @@ RUN chmod +x /script.sh
 #копируем каталог с картинками музея
 
 #открываем порт для запросов к серверу TG
-EXPOSE 8080
+EXPOSE 8082
 #запускаем приложение с nohup
 #CMD ["./gettheatre"]
 CMD ["/bin/bash", "-c", "/script.sh && date && chmod 644 /etc/cron.d/viewvrn && cron && tail -f /var/log/cron.log"]
