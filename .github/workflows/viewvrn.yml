@@ -17,3 +17,10 @@ env:
   ENV_FILE_PATH: ".env.dev"
   #Путь к логам
   LOGS_PATH: "/var/log/prod"   
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
