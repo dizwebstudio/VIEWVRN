@@ -32,3 +32,39 @@ jobs:
 
       - name: Test
         run: go test ./...
+  
+  build:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs: test
+    steps: 
+      #делаем чекаут кода 
+      - name: Git CheckOut Repository
+        uses: actions/checkout@v3
+      - name: WHO A MI
+        run: whoami
+
+      #устанавливаем QEMU
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      
+      #устанавливаем Docker Buildx
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+      - name: WHO A MI
+        run: whoami
+
+      #авторизуемся на DockerHub
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }} 
+          password: ${{ secrets.DOCKER_HUB }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/viewvrn:latest
