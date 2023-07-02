@@ -2,7 +2,7 @@ name: Build And Public VIEWVRN
 on:
   push:
     branches:
-    - "devops"
+    - "master"
   pull_request:
     branches:
     - "master"
