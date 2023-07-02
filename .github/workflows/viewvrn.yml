@@ -24,3 +24,11 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@v3
+      
+      - name: Set Up GO 1.19
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+
+      - name: Test
+        run: go test ./...
