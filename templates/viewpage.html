@@ -1,0 +1,18 @@
+<!Doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Просмотр спаршинных новостей</title>
+    </head>
+    <body>
+        <h1>Просмотр опубликованных новостей</h1>
+        {{ range . }}
+        <h2>{{ .Title }}</h2>
+        <p>{{ .Text }}</p>
+        {{ else }}
+            <p>Статей нет! Или База данных недоступна!</p>
+        {{ end }}
+    </body>
+</html>
