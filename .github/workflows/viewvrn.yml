@@ -87,11 +87,11 @@ jobs:
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKER_HUB }}
 
           #останавливаем старый контейнер
-          docker stop vrnview
+          docker stop viewvrn
           #удаляем старый контейнер
-          docker rm vrnview
+          docker rm viewvrn
 
-          docker pull dataenginer/vrnview:latest
+          docker pull dataenginer/viewvrn:latest
 
           #Запускаем новый контейнер с изображением
-          docker run --restart=always --name=vrnview -d dataenginer/vrnview:latest 
+          docker run --restart=always --name=vrnview -d dataenginer/viewvrn:latest 
