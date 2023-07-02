@@ -68,3 +68,30 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/viewvrn:latest
+  
+  deploy: 
+    runs-on: [self-hosted]
+    if: github.event_name == 'push'
+    needs: build
+    steps:
+     - name: Deploy to VPS via SSH action
+       uses: appleboy/ssh-action@v0.1.3
+       with: 
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.USERNAME_HOST }}
+        password: ${{ secrets.PASSWORD_HOST }}
+        port: ${{ secrets.PORT_HOST }}
+        envs: IMAGE_NAME,REGISTRY,GITHUB_SHA,LOGS_PATH,ENV_FILE,CONTAINER_NAME
+        script: |
+          #Авторизуемся на сайте DOCKERHUB
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKER_HUB }}
+
+          #останавливаем старый контейнер
+          docker stop vrnview
+          #удаляем старый контейнер
+          docker rm vrnview
+
+          docker pull dataenginer/vrnview:latest
+
+          #Запускаем новый контейнер с изображением
+          docker run --restart=always --name=vrnview -d dataenginer/vrnview:latest 
