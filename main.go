@@ -57,6 +57,7 @@ func selectNews() []News {
 
 		accidents = append(accidents, accident)
 	}
+
 	fmt.Println(accidents)
 	return accidents
 }
