@@ -1,0 +1,19 @@
+name: Build And Public VIEWVRN
+on:
+  push:
+    branches:
+    - "devops"
+  pull_request:
+    branches:
+    - "master"
+env:
+  #указываем репозиторий Docker контейнеров
+  REGISTRY: "https://hub.docker.com/"
+  # указываем имя изображения
+  IMAGE_NAME: "dataenginer/gettheatre"
+  #указываем имя контейнера
+  CONTAINER_NAME: "dataenginer/gettheatre"
+  #указываем путь к файлу окружения
+  ENV_FILE_PATH: ".env.dev"
+  #Путь к логам
+  LOGS_PATH: "/var/log/prod"   
