@@ -28,7 +28,7 @@ RUN pwd
 RUN ls -la
 #копируем в docker образ собранный бинарный файл
 COPY --from=0 /github/.bin/viewvrn .
-COPY templates/viewpage.html templates/viewpage
+COPY templates/viewpage.html templates/viewpage.html
 COPY cron /etc/cron.d/viewvrn
 
 COPY script.sh /script.sh
