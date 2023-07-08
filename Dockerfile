@@ -23,10 +23,12 @@ RUN mkdir /data
 #используем директорию root как рабочую
 WORKDIR /github/
 RUN mkdir log
+RUN templates
 RUN pwd
 RUN ls -la
 #копируем в docker образ собранный бинарный файл
 COPY --from=0 /github/.bin/viewvrn .
+COPY templates/viewpage.html templates/viewpage
 COPY cron /etc/cron.d/viewvrn
 
 COPY script.sh /script.sh
