@@ -23,7 +23,7 @@ RUN mkdir /data
 #используем директорию root как рабочую
 WORKDIR /github/
 RUN mkdir log
-RUN templates
+RUN mkdir templates
 RUN pwd
 RUN ls -la
 #копируем в docker образ собранный бинарный файл
