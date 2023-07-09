@@ -8,13 +8,21 @@
     </head>
     <body>
         <header>
-            <h1>Медийное Пространство Воронежа</h1>
+            <!--Logo site-->
+            <img src="/templates/images/logo.png" alt="logo">
+            <!--Категория новостей-->
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
         </header>
-        <img src="/templates/images/logo.png" alt="logo">
+        <!--Вывод всех новостей сайта-->
         <h1>Просмотр опубликованных новостей</h1>
         {{ range . }}
         <h2>{{ .Title }}</h2>
         <p>{{ .Text }}</p>
+        <!--Если новостей нет или подключиться не удалось-->
         {{ else }}
             <p>Статей нет! Или База данных недоступна!</p>
         {{ end }}
