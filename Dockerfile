@@ -30,7 +30,7 @@ RUN ls -la
 #копируем в docker образ собранный бинарный файл
 COPY --from=0 /github/.bin/viewvrn .
 COPY templates/images/logo.png templates/images/logo.png
-COP templates/images/logo.png images/logo.png
+COPY templates/images/logo.png images/logo.png
 COPY templates/viewpage.html templates/viewpage.html
 COPY cron /etc/cron.d/viewvrn
 
