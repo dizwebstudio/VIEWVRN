@@ -70,5 +70,6 @@ func viewPage(w http.ResponseWriter, r *http.Request) {
 
 func handleRequest() {
 	http.HandleFunc("/view", viewPage)
+	http.Handle("/templates/images/", http.StripPrefix("/templates/images/", http.FileServer(http.Dir("templates/images"))))
 	http.ListenAndServe(":8082", nil)
 }
