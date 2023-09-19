@@ -71,5 +71,9 @@ func viewPage(w http.ResponseWriter, r *http.Request) {
 func handleRequest() {
 	http.HandleFunc("/view", viewPage)
 	http.Handle("/templates/images/", http.StripPrefix("/templates/images/", http.FileServer(http.Dir("templates/images"))))
+	http.Handle("/templates/assets/", http.StripPrefix("/templates/assets/", http.FileServer(http.Dir("templates/assets"))))
+	http.Handle("/templates/assets/js/", http.StripPrefix("/templates/assets/js/", http.FileServer(http.Dir("templates/assets/js"))))
+	http.Handle("/templates/assets/img/", http.StripPrefix("/templates/assets/img/", http.FileServer(http.Dir("templates/assets/img"))))
+	http.Handle("/templates/assets/img/logo/", http.StripPrefix("/templates/assets/img/logo/", http.FileServer(http.Dir("templates/assets/img/logo"))))
 	http.ListenAndServe(":8082", nil)
 }
