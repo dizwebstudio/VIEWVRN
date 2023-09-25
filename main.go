@@ -19,6 +19,21 @@ type News struct {
 	Title         string `json:"title"`         //Заголовок новости
 }
 
+// функция возвращает 4 последних статьи по времени
+func (n News) LastforNews(accidents News) {
+
+	fmt.Println()
+}
+
+// функция сортировки по времени
+func SortUPTime() {
+}
+
+// Функция сортировки по категориям
+func SortCategory() {
+
+}
+
 func main() {
 	handleRequest()
 	//selectNews()
@@ -54,11 +69,13 @@ func selectNews() []News {
 		accident.UrlImage = values[5].(string)
 		accident.UrlSmallImage = values[6].(string)
 		accident.Url = values[7].(string)
-
+		fmt.Println("----------------------------------------------------------------------------------------------------------------------------------------------------------------")
+		fmt.Println(accident)
+		fmt.Println("----------------------------------------------------------------------------------------------------------------------------------------------------------------")
 		accidents = append(accidents, accident)
 	}
-
-	fmt.Println(accidents)
+	//Вывод всех новостей
+	//fmt.Println(accidents)
 	return accidents
 }
 
@@ -71,9 +88,10 @@ func viewPage(w http.ResponseWriter, r *http.Request) {
 func handleRequest() {
 	http.HandleFunc("/view", viewPage)
 	http.Handle("/templates/images/", http.StripPrefix("/templates/images/", http.FileServer(http.Dir("templates/images"))))
-	http.Handle("/templates/assets/", http.StripPrefix("/templates/assets/", http.FileServer(http.Dir("templates/assets"))))
-	http.Handle("/templates/assets/js/", http.StripPrefix("/templates/assets/js/", http.FileServer(http.Dir("templates/assets/js"))))
-	http.Handle("/templates/assets/img/", http.StripPrefix("/templates/assets/img/", http.FileServer(http.Dir("templates/assets/img"))))
-	http.Handle("/templates/assets/img/logo/", http.StripPrefix("/templates/assets/img/logo/", http.FileServer(http.Dir("templates/assets/img/logo"))))
+	http.Handle("/templates/templates/assets/", http.StripPrefix("/templates/templates/assets/", http.FileServer(http.Dir("templates/templates/assets"))))
+	http.Handle("/templates/templates/assets/js/", http.StripPrefix("/templates/templates/assets/js/", http.FileServer(http.Dir("templates/templates/assets/js"))))
+	http.Handle("/templates/templates/assets/css/", http.StripPrefix("/templates/templates/assets/css/", http.FileServer(http.Dir("templates/templates/assets/css"))))
+	http.Handle("/templates/templates/assets/img/", http.StripPrefix("/templates/templates/assets/img/", http.FileServer(http.Dir("templates/templates/assets/img"))))
+	http.Handle("/templates/templates/assets/img/logo/", http.StripPrefix("/templates/templates/assets/img/logo/", http.FileServer(http.Dir("templates/templates/assets/img/logo"))))
 	http.ListenAndServe(":8082", nil)
 }
