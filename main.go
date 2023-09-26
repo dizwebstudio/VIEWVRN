@@ -5,9 +5,19 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"time"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 )
+
+// структура чтобы хранить состояние погоды время и курсы валют которые выводятся в header
+type Header struct {
+	Weather    string `json:"weather"`    //текущая погода воронеж
+	Time       string `json:"time"`       //текущие точное время воронеж
+	DollarRate string `json:"dollarrate"` //курс доллара
+	EuroRate   string `json:"eurorate"`   //курс евро
+	UanRate    string `json:"uanrate"`    //курсюаня
+}
 
 type News struct {
 	Url           string `json:"url"`           //Url новости
@@ -19,19 +29,84 @@ type News struct {
 	Title         string `json:"title"`         //Заголовок новости
 }
 
-// функция возвращает 4 последних статьи по времени
-func (n News) LastforNews(accidents News) {
+// функция возвращает последнюю новость по времени
+func (n News) LastforNews() News {
+	url_database := "postgres://nwuser:nwpassword@supportdev.ru:5432/news"
+	dbPool, err := pgxpool.Connect(context.Background(), url_database)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("Подключение открыто успешно!" + "\n" + "Получаем последнюю новость по времени")
+	/*так как у нас в базе используется поле даты и времени в типе стринг получаем значение всех новостей, а затем сортируем, пильнуть тикет на изменение типа поля*/
+	rows, err := dbPool.Query(context.Background(), "select * from news.news order by timenews desc limit 1;")
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer dbPool.Close()
 
-	fmt.Println()
+	var accident News //буферная переменная для получения записи из бд
+	for rows.Next() {
+		values, err := rows.Values()
+		if err != nil {
+			fmt.Println(err)
+		}
+		accident.Category = values[1].(string)
+		accident.Time = values[2].(string)
+		accident.Text = values[3].(string)
+		accident.Title = values[4].(string)
+		accident.UrlImage = values[5].(string)
+		accident.UrlSmallImage = values[6].(string)
+		accident.Url = values[7].(string)
+	}
+	return accident
+	/*можно будет удалить после изменения типа поля*/
+	/*var accidents []News //массив новостей
+	var accident News    //буферная переменная для получения записи из бд
+	for rows.Next() {
+		values, err := rows.Values()
+		if err != nil {
+			fmt.Println(err)
+		}
+		/*первая колонка в бд автоинкремент записи поэтому ее не учитываем парсим значения со второй колонки*/
+	/*accident.Category = values[1].(string)
+		accident.Time = values[2].(string)
+		accident.Text = values[3].(string)
+		accident.Title = values[4].(string)
+		accident.UrlImage = values[5].(string)
+		accident.UrlSmallImage = values[6].(string)
+		accident.Url = values[7].(string)
+		fmt.Println("----------------------------------------------------------------------------------------------------------------------------------------------------------------")
+		fmt.Println(accident)
+		fmt.Println("----------------------------------------------------------------------------------------------------------------------------------------------------------------")
+		accidents = append(accidents, accident)
+	}
+	SortUPTime(accidents)
+	fmt.Println()*/
 }
 
-// функция сортировки по времени
-func SortUPTime() {
+// функция сортировки по времени чтобы вернуть значение последней по времени
+// функция сортировки работает не правильно
+func SortUPTime(accidents []News) News {
+	for i := 0; i < len(accidents)-1; i++ {
+		//4minIndex := i
+		for j := 0; j < len(accidents)-i-1; j++ {
+			date1, _ := time.Parse("20060102", accidents[i].Time)
+			date2, _ := time.Parse("20060102", accidents[j].Time)
+			if date1.Unix() < date2.Unix() {
+				//minIndex = j
+				buff := accidents[i]
+				accidents[i] = accidents[j]
+				accidents[j] = buff
+			}
+		}
+		//accidents[i], accidents[minIndex] = accidents[minIndex], accidents[i]
+	}
+	return accidents[len(accidents)-1]
 }
 
 // Функция сортировки по категориям
-func SortCategory() {
-
+func SortCategory(accidents []News) []News {
+	return accidents
 }
 
 func main() {
@@ -76,6 +151,8 @@ func selectNews() []News {
 	}
 	//Вывод всех новостей
 	//fmt.Println(accidents)
+	fmt.Println("\n\n\n\n Последняя новость была в: " + accident.LastforNews().Time + "\n\n\n\n")
+
 	return accidents
 }
 
